@@ -149,7 +149,8 @@ function checkReadArray(){
 await startUp();
 await setupDatabase();
 console.log("Database Connected...");
-mqtt_client = mqtt.connect(mqtt_url);
+mqtt_client = await mqtt.connect(mqtt_url);
+console.log("finished connect?");
 
 // Connect to the MQTT Broker
 mqtt_client.on("connect", () => {
@@ -166,6 +167,7 @@ mqtt_client.on("connect", () => {
       }
     });
   }
+  console.log("topics have been set.");
 });
 
 // Handle new messages from MQTT
@@ -183,4 +185,8 @@ mqtt_client.on('message', (topic, message) => {
       break;
     }
   }
+});
+
+mqtt_client.on('error', (err) => {
+  console.error('MQTT client error:', err);
 });
