@@ -1,5 +1,7 @@
 {
+  "type": "module",
   "dependencies": {
-    "mqtt": "^5.10.3"
+    "mqtt": "^5.10.3",
+    "mysql2": "^3.11.5"
   }
 }
