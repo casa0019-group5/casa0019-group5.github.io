@@ -1,0 +1,85 @@
+#include <Servo.h>
+#include <Adafruit_NeoPixel.h>
+
+#define PIXEL_PIN 1    // NeoPixel data pin
+#define NUM_PIXELS 8   // Number of NeoPixel LEDs
+#define BRIGHTNESS 50  // Global brightness (0-255)
+
+Servo myServo; // Create a Servo object
+Adafruit_NeoPixel strip(NUM_PIXELS, PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+int currentData = 1850;  // Initialize as the starting position of the servo
+int counter = 0;         // Counter for tracking cycles
+int currentPosition = 1850; // Current microsecond position of the servo (starting at 1850)
+
+void setup() {
+  myServo.attach(2);   // Connect the servo signal pin to digital pin 2
+  myServo.writeMicroseconds(1850); // Initial position set to 1850 (10ml)
+  delay(1000);          // Wait for the servo to reach the initial position
+
+  strip.begin();        // Initialize NeoPixel
+  strip.setBrightness(BRIGHTNESS); // Set global brightness
+  strip.show();         // Ensure all LEDs are initially off
+
+  Serial.begin(9600);   // Start serial communication for debugging
+}
+
+void loop() {
+  // Simulate receiving random input data (range 0-1000)
+  currentData += random(1, 51); 
+  if (currentData > 1000) {
+    currentData = 0; // Reset to 0 if the range is exceeded
+  }
+
+  // Map the input data to the range 1850 (10ml) to 500 (0ml)
+  int targetPosition = map(currentData, 0, 1000, 1850, 500);
+
+  // Print the current input data and the mapped target position
+  Serial.print("Input Data: ");
+  Serial.print(currentData);
+  Serial.print(" -> Target Position: ");
+  Serial.println(targetPosition);
+
+  // Push the syringe to the target position
+  pushToPosition(targetPosition);
+
+  // If the syringe reaches the minimum position (500), return to the initial position (1850)
+  if (currentPosition >= 500 && currentPosition <= 520) {
+    pushToPosition(1850);
+    counter++; // Increment the counter
+    Serial.print("Counter: ");
+    Serial.println(counter);
+
+    // Update NeoPixel LEDs
+    updateNeoPixel(counter);
+  }
+
+  delay(2000); // Wait for a while, simulating the next input data
+}
+
+void pushToPosition(int targetPosition) {
+  // Smoothly move to the target position
+  if (targetPosition > currentPosition) {
+    for (int pos = currentPosition; pos <= targetPosition; pos += 50) {
+      myServo.writeMicroseconds(pos);
+      delay(50); // Delay to ensure smooth movement
+    }
+  } else {
+    for (int pos = currentPosition; pos >= targetPosition; pos -= 50) {
+      myServo.writeMicroseconds(pos);
+      delay(50); // Delay to ensure smooth movement
+    }
+  }
+  currentPosition = targetPosition; // Update the current servo position
+}
+
+void updateNeoPixel(int counter) {
+  // Update the LED states
+  for (int i = 0; i < NUM_PIXELS; i++) {
+    if (i < counter) {
+      strip.setPixelColor(i, strip.Color(0, 255, 0)); // Turn on the green LED
+    } else {
+      strip.setPixelColor(i, strip.Color(0, 0, 0));   // Turn off the remaining LEDs
+    }
+  }
+  strip.show(); // Refresh the LED strip
+}
