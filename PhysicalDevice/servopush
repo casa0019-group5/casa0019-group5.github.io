@@ -1,0 +1,36 @@
+#include <Servo.h>
+
+Servo myServo; // 创建舵机对象
+
+int currentData = 0; // 当前随机数初始值（从0开始）
+
+void setup() {
+  myServo.attach(2);  // 将舵机信号引脚连接到数字引脚2
+  delay(500);         // 稳定延迟
+  // 初始化舵机位置
+  myServo.writeMicroseconds(500); // 初始化位置为 500（0ml）
+  delay(1000);        // 等待舵机移动到初始位置
+
+  Serial.begin(9600); // 启动串口通信，用于调试
+}
+
+void loop() {
+  // 增量生成随机数，确保从小到大
+  currentData += random(1, 51); // 每次增加一个随机步长（1到50之间）
+  if (currentData > 1000) {
+    currentData = 0; // 如果超出范围，重新从0开始
+  }
+
+  // 使用 map 函数将 0-1000 的值映射到 1850-500
+  int targetPosition = map(currentData, 0, 1000, 1850, 500);
+
+  // 输出当前数据和映射结果
+  Serial.print("Input Data: ");
+  Serial.print(currentData);
+  Serial.print(" -> Mapped Position: ");
+  Serial.println(targetPosition);
+
+  // 移动舵机到目标位置
+  myServo.writeMicroseconds(targetPosition);
+  delay(1000); // 保持一段时间
+}
