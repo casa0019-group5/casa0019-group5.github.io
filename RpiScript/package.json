@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "mqtt": "^5.10.3",
     "mysql2": "^3.11.5"
   }
