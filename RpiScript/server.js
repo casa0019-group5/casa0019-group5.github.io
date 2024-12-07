@@ -13,6 +13,7 @@ const dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 };
   
 // Database and Table Consts
@@ -80,11 +81,175 @@ async function startDatabase() {
     }
 }
 
+await startDatabase();
+console.log("Database initialized.");
+
+/**
+ * ENDPOINTS
+ */
+
+/**
+ * Testing endpoint
+ */
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
 
+// Endpoint to get the total water usage for a specific Floor Num
+app.get('/total/floor/:id', async (req, res) => {
+    const floorId = req.params.id;
 
+    // Check input
+    if(!floorId || isNaN(floorId)){
+        return res.status(400).json({
+            error: 'Not a Number'
+        });
+    }
+
+    if((floorId >= 20) || (floorId < 4)){
+        return res.status(400).json({
+            error: 'Invalid Floor Number'
+        });
+    }
+
+    try{
+        // Grab a Connection from the pool
+        const connection = await pool.getConnection();
+
+        // Create the SQL Query
+        const query = `
+            SELECT SUM(value) AS total_value
+            FROM ${tableName}
+            WHERE floor = ${floorId}
+                AND timestamp = (
+                    SELECT MAX(timestamp)
+                    FROM ${tableName}
+                    WHERE floor = ${floorId}
+                );`;
+
+        const sum = await connection.query(query);
+        const total = sum[0]?.total_value || 0;
+
+        connection.release();
+
+        console.log(`FloorNum: ${floorId}, Sum: ${total}`);
+        res.json(total);
+    } catch(error){
+        console.error('Error fetching data: ', error);
+        res.status(500).json({
+            error: 'An Error occurred when fetching data.'
+        });
+    }
+});
+
+// Gets the total water usage for a specific SAC ID
+app.get('/total/SAC/:id', async (req, res) => {
+    const sacId = req.params.id;
+
+    // Check input
+    if(!sacId || isNaN(sacId)){
+        return res.status(400).json({
+            error: 'Not a Number'
+        });
+    }
+
+    if((sacId > 2) || (sacId < 1)){
+        return res.status(400).json({
+            error: 'Invalid SAC Number'
+        });
+    }
+
+    try{
+        // Grab a Connection from the pool
+        const connection = await pool.getConnection();
+
+        // Create the SQL Query
+        const query = `
+            SELECT SUM(value) AS total_value
+            FROM ${tableName}
+            WHERE side = ${sacId}
+                AND timestamp = (
+                    SELECT MAX(timestamp)
+                    FROM ${tableName}
+                    WHERE side = ${sacId}
+                );`;
+
+        const sum = await connection.query(query);
+        const total = sum[0]?.total_value || 0;
+
+        connection.release();
+
+        console.log(`SACNum: ${sacId}, Sum: ${total}`);
+        res.json(total);
+    } catch(error){
+        console.error('Error fetching data: ', error);
+        res.status(500).json({
+            error: 'An Error occurred when fetching data.'
+        });
+    }
+});
+
+app.get('/today/floor/:id', async (req, res) => {
+    const floorId = req.params.id;
+
+    // Check input
+    if(!floorId || isNaN(floorId)){
+        return res.status(400).json({
+            error: 'Not a Number'
+        });
+    }
+
+    if((floorId >= 20) || (floorId < 4)){
+        return res.status(400).json({
+            error: 'Invalid Floor Number'
+        });
+    }
+
+    try{
+        const connection = await pool.getConnection();
+
+        // Query to find the latest and midnight sums
+        const query = `
+          SELECT 
+              (latest.sum_value - midnight.sum_value) AS value_difference
+          FROM 
+              (SELECT 
+                   SUM(value) AS sum_value
+               FROM ${tableName}
+               WHERE floor = ${floorId}
+                 AND timestamp = (SELECT MAX(timestamp) FROM ${tableName} WHERE floor = ${floorId})
+              ) AS latest,
+              (SELECT 
+                   SUM(value) AS sum_value
+               FROM ${tableName}
+               WHERE floor = ${floorId}
+                 AND DATE(timestamp) = CURDATE()
+                 AND TIME(timestamp) BETWEEN '00:00:00' AND '00:05:00'
+              ) AS midnight;
+        `;
+    
+        // Execute the query
+        const rows = await connection.query(query);
+    
+        // Close the connection
+        connection.release();
+    
+        // Return the result
+        const valueDifference = rows[0]?.value_difference || 0;
+        res.json({ floorId, valueDifference });
+    }catch(error){
+        console.error('Error fetching data: ', error);
+        res.status(500).json({
+            error: 'An Error occurred when fetching data.'
+        });
+    }
+});
+
+app.get('/today/SAC/:id', async (req, res) => {
+    const sacId = req.params.id;
+
+
+});
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
