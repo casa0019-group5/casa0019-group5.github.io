@@ -2,6 +2,14 @@
 
 End of term project for CASA0019. This project tracks and visualizes the water consumption of One Pool Street residences using a physical device, and it's digital twin.
 
+## Backend Setup
+
+To improve the run-time of the various systems of this project, as well as make better sense of the data, we've implemented a backend to suppliment the outputs. Since the water data pulled from the OPS MQTT Stream only tells us the total water used by each sensor since the time they were initialized, the `collect_water.js` script takes timestamped readings from the OPS MQTT stream, and saves them to a MariaDB table. By doing this, we now have historical data to understand how water usage changes throughout the day.
+
+The `collect_water.js` script is setup in a PM2 instance, this contains the entire build environment, and therefore allows us to set the environmental variables. This specific script is then restarted every 10 minutes using a crontab job. Furthermore, by using a PM2 instance, we can also provide out `server.js` file with all the appropriate values to be continously running in the background of the pi.
+
+![backend arch](./docs/Backend.drawio.png)
+
 ## RaspberryPi Setup
 
 ### Install
@@ -9,15 +17,13 @@ End of term project for CASA0019. This project tracks and visualizes the water c
 1. Pull the RpiScript folder onto the raspberry pi.
    It should include:
 
-- `.env` : Contains all URLs and User/Pass
+- `ecosystem.config.cjs` : Contains all the environmental variables to create and run the PM2 Instance. (create your own)
 - `collect_water.js` : Script to update the database.
-- `server.js` : Script that contains the API
-- `package.json` : Contains all the Node libraries required.
-- `package-lock.json` : ???
+- `server.js` : Script that contains the API.
 
-2. Run `npm install` to install all the required node packages listed in `package.json`.
+2. Run `npm init && npm install` to install all the required node packages listed in `package.json`.
 
-3. Install mariadb-server using `sudo apt install mariadb-server`
+3. Install mariadb-server using `apt install mariadb-server`
 
 - Might have to reboot
 
