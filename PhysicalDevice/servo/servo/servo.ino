@@ -1,10 +1,11 @@
 #include <Servo.h>
 #include <Adafruit_NeoPixel.h>
 #include <WiFiNINA.h>
+#include "secrets.h"
 // WiFi credentials
-const char* ssid = "CE-Hub-Student";
-const char* password = "casa-ce-gagarin-public-service";
 
+const char* ssid          = SECRET_SSID;
+const char* password      = SECRET_PASS;
 // Raspberry Pi server details
 const char* serverIP = "10.129.111.13";  // Replace with Raspberry Pi's IP address
 const int serverPort = 3001;             // Replace with your server port
@@ -54,6 +55,7 @@ void loop() {
   Serial.print("current time");
   Serial.println(currentMillis);
 }
+
 
 // Function to connect to WiFi
 void connectWiFi() {
