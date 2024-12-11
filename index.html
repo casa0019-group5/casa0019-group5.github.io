@@ -13,7 +13,11 @@
             <div class="content">
                 <div class="text-description">
                     <p><span class="title_content">DATASET <br/></span> 
-                        This Data Device uses the real time water metre data from an individual tower of One Pool Street. This tower is split into two parts, SAC1 and SAC2. Both SAC1 and SAC2 have separate water metres that we collect data from.
+                        To gauge the water usage throughout the day, the team started with the incoming MQTT Data stream from One Pool Street.
+                        This data gets updated every few minutes from two sensors located on every residence floor, which are identified using the IDs of SAC1 and SAC2. 
+                        The data coming from the sensors represent the current total water usage from the time the sensors turned on, till now.
+                        To convert this data to show how the water usage changes throughout the day, we created a database to store the historical data from the MQTT stream.
+                        The added benefit to this was allowing for both apps to shift away from subscribing to 32 different MQTT streams, and instead conducting HTTP requests to 1 of 6 endpoints.
                     </p>
 
                     <p>
@@ -49,7 +53,7 @@
                     <h2>CE 2024 - 2025</h2>
                 </div>
                 <div class="group-name">
-                    <p>Group QuietSpaces</p>
+                    <p>Group CasaMigos</p>
                 </div>
                 <div class="github-link">
                     <a target=_blank href="https://github.com">GitHub Link: https://github.com/casa0019-group5/casa0019-group5.github.io</a>
