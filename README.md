@@ -31,10 +31,6 @@ One of the main problems we encountered with the MQTT stream was the lack of con
    Input: SACNum
    Output: Difference between midnight and latest reading of endpoint 2.
 
-# casa0019-group5.github.io
-
-End of term project for CASA0019. This project tracks and visualizes the water consumption of One Pool Street residences using a physical device, and it's digital twin.
-
 ## Backend Setup
 
 To improve the run-time of the various systems of this project, as well as make better sense of the data, we've implemented a backend to suppliment the outputs. Since the water data pulled from the OPS MQTT Stream only tells us the total water used by each sensor since the time they were initialized, the `collect_water.js` script takes timestamped readings from the OPS MQTT stream, and saves them to a MariaDB table. By doing this, we now have historical data to understand how water usage changes throughout the day.
