@@ -1,6 +1,6 @@
 [CasaMigos](#https://casa0019-group 5.github.io/)
 
-#CasaMigos
+# CasaMigos
 
 <img src="./docs/physical device.jpg" alt="Image">
 
