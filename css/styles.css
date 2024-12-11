@@ -35,7 +35,7 @@ body {
 
 .content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
   background-color: #EAFDFC;
   color: #333;
@@ -55,7 +55,7 @@ body {
 
 .media {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 15px;
   align-items: center;
   justify-items: center;

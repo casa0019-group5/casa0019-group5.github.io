@@ -12,7 +12,11 @@
             </div>
             <div class="content">
                 <div class="text-description">
-                    <p><span class="title_content">DATASET <br/></span> 
+                    <div class="media">
+                        <img src="./docs/physical device.jpg" alt="Image">
+                    </div>
+
+                    <p><span class="title_content">DATABASE <br/></span> 
                         To gauge the water usage throughout the day, the team started with the incoming MQTT Data stream from One Pool Street.
                         This data gets updated every few minutes from two sensors located on every residence floor, which are identified using the IDs of SAC1 and SAC2. 
                         The data coming from the sensors represent the current total water usage from the time the sensors turned on, till now.
@@ -27,25 +31,26 @@
                         Afterwards it will wait for the next data come in for 10 minutes, and repeat the process. 
                         while the water level reaches a certain threshold, it will go back to the initial state and one more light on Neopixel will turn on.
                     </p>
-                    <video width="400" controls autoplay>
-                        <source src="./docs/physical_device_overview.MOV" type="video/mp4">
-                    </video>
+                    <div class="media">
+                        <video width="400" controls autoplay style="transform: rotate(270deg); transform-origin: center;">
+                            <source src="./docs/physical_device_overview.MOV" type="video/mp4">
+                        </video>
+                    </div>
 
                     <p>
                         <span class="title_content">DATA DEVICE (Digital)<br/></span>
                         The Digital Twin of the data device provides additional information. It includes the sum of SAC1 and SAC2 for each individual floor in One Pool Street. In addition, it includes the total value for SAC1 and SAC2 separately in a barchart. Therefore, we can compare the difference in water usage between the separate sections of One Pool Street.
                     </p>
-                    <video width="400" controls autoplay>
-                        <source src="./docs/ar_test.MOV" type="video/mp4">
-                    </video>
+                    <div class="media">
+                        <video width="400" controls autoplay>
+                            <source src="./docs/ar_test.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    
                     <p>
                         <span class="title_content">HOW TO<br/></span>
                             Open the app and point the screen at the water droplet. The augmented reality will display a dashboard showcasing water usage data for each floor and the total usage as a bar chart individually for SAC1 and SAC2.
                     </p>
-                </div>
-                <div class="media">
-                    <img src="./docs/physical device.jpg" alt="Image">
-                    <figcaption></figcaption>
                 </div>
             </div>
             <div class="footer">
