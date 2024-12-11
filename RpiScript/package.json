@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mariadb": "^3.4.0",
+    "mqtt": "^5.10.3"
+  }
+}
