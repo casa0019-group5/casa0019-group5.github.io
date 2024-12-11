@@ -10,7 +10,8 @@ After we received the initial brief and theme, we started digging for interestin
 
 We then had to decide how we wanted to represent this data. After some brainstorming we were all in agreement that an old-fashioned water gauge was out of the picture, we wanted something a little more unique. Taking inspiration from one of Andy's projects where he had used a syringe to visualise, we took his model of the syringe and repurposed it to show the water usage data, through the syringe pushing water up the device to demonstrate the total daily water usage.
 
-<video src="./docs/physical_device_overview.mp4" controls="controls" style="max-width: 730px;">
+<video width="400" controls autoplay>
+    <source src="./docs/physical_device_overview.MOV" type="video/mp4">
 </video>
 
 ## MQTT to Raspberry Pi
