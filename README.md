@@ -1,6 +1,6 @@
 # CASAMIGOS
 
-<img src="https://github.com/casa0019-group5/casa0019-group5.github.io/blob/servo/PhysicalDevice/src/physical%20device.jpg?raw=true" alt="Image">
+<img src="./docs/physical device.jpg" alt="Image">
 
 ## Why did we choose water data?
 
