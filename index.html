@@ -1,40 +1,60 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
-</head>
-<body>
-    <div class="grid-container">
-        <div class="title">
-            <h1>Noise Data Device</h1>
-        </div>
-        <div class="content">
-            <div class="text-description">
-             
+    <head>
+        <title>CasaMigos - Water Usage Gauge</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	    <link rel='stylesheet' href='css/styles.css' type='text/css'/>
+    </head>
+    <body>
+        <div class="grid-container">
+            <div class="title">
+                <h1>UCL One Pool Street water usage</h1>
+            </div>
+            <div class="content">
+                <div class="text-description">
+                    <p><span class="title_content">DATASET <br/></span> 
+                        This Data Device uses the real time water metre data from an individual tower of One Pool Street. This tower is split into two parts, SAC1 and SAC2. Both SAC1 and SAC2 have separate water metres that we collect data from.
+                    </p>
 
-    <p><span class="title_content">DATASET <br/></span> This Data Device uses the real time noise level from the Connected Environments Lab</p>
+                    <p>
+                        <span class="title_content">DATA DEVICE (Physical)<br/></span> 
+                        The physical device shows the real-time water usage in UCL One Pool Street using syringes and LEGO servo. 
+                        Once the power supply connects to the device, the Neopixel illustrates the x100 Litres usage, the syringes are used to show *10 Litres water and the LEGO servo is used to control the flow of water. 
+                        Afterwards it will wait for the next data come in for 10 minutes, and repeat the process. 
+                        while the water level reaches a certain threshold, it will go back to the initial state and one more light on Neopixel will turn on.
+                    </p>
+                    <video width="400" controls autoplay>
+                        <source src="./docs/physical_device_overview.MOV" type="video/mp4">
+                    </video>
 
-    <p><span class="title_content">DATA DEVICE (Physical)<br/></span> The data is visually represented using a color-coding system and a plain language description of various noise threshold. This approach aids users in understanding the impact of noise on their health.</p>
-
-    <p><span class="title_content">DATA DEVICE (Digital)<br/></span> The Digital Twin of the data device provides additional information. It includes the precise noise level and an interactive chart describing the distribution of noise throughout the day, week, and month for different locations. The displayed information changes based on the user’s selection.</p>
-              <p><span class="title_content">HOW TO<br/></span> Open the App and point it at the screen of the Data Device. The Augmented information will overlay with the Data Device, tap on the charts to change the visualisation from day to month. Use the dropdown menu to change space.</p>
+                    <p>
+                        <span class="title_content">DATA DEVICE (Digital)<br/></span>
+                        The Digital Twin of the data device provides additional information. It includes the sum of SAC1 and SAC2 for each individual floor in One Pool Street. In addition, it includes the total value for SAC1 and SAC2 separately in a barchart. Therefore, we can compare the difference in water usage between the separate sections of One Pool Street.
+                    </p>
+                    <video width="400" controls autoplay>
+                        <source src="./docs/ar_test.MOV" type="video/mp4">
+                    </video>
+                    <p>
+                        <span class="title_content">HOW TO<br/></span>
+                            Open the app and point the screen at the water droplet. The augmented reality will display a dashboard showcasing water usage data for each floor and the total usage as a bar chart individually for SAC1 and SAC2.
+                    </p>
+                </div>
+                <div class="media">
+                    <img src="./docs/physical device.jpg" alt="Image">
+                    <figcaption></figcaption>
+                </div>
             </div>
-            <div class="media">
-                <img src="https://github.com/ucl-casa-ce/Open-Gauges/blob/main/Contributed/NoiseGauge/data/img/NoiseGauge.jpg?raw=true" alt="Image">
-                <video src="https://github.com/ucl-casa-ce/Open-Gauges/blob/main/Contributed/NoiseGauge/data/img/NoiseGaugeAR.mp4?raw=true" controls></video>
+            <div class="footer">
+                <div class="footer-title">
+                    <h2>CE 2024 - 2025</h2>
+                </div>
+                <div class="group-name">
+                    <p>Group QuietSpaces</p>
+                </div>
+                <div class="github-link">
+                    <a target=_blank href="https://github.com">GitHub Link: https://github.com/casa0019-group5/casa0019-group5.github.io</a>
+                </div>
             </div>
         </div>
-        <div class="footer">
-            <div class="footer-title">
-                <h2>CE 2024 - 2025</h2>
-            </div>
-            <div class="group-name">
-                <p>Group QuietSpaces</p>
-            </div>
-            <div class="github-link">
-                <a target=_blank href="https://github.com/casa0019-group5/casa0019-group5.github.io">GitHub Link</a>
-            </div>
-        </div>
-    </div>
-</body>
+    </body>
 </html>
