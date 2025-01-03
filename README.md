@@ -92,6 +92,7 @@ The `collect_water.js` script is setup in a PM2 instance, this contains the enti
 - `SELECT * FROM water_table;`
 
 ## Design of Dashboard
+![Dashboard](./docs/Dashboard.png)
 
 When establishing the database, we found that the data we could obtain were the water consumption of the east and west sides of each floor and the total water consumption of the floor. Since it contains data on the water consumption of 16 floors from the 4th floor to the 19th floor, we didn't find a suitable table to display so many data at the same time. Therefore, we chose to use the form of numbers to present the data of the total water consumption of each layer more intuitively. In addition to the longitudinal comparison of each layer, we also used the data of different water consumption on the east and west sides of each layer. The bar chart on the dashboard also gives users a clear picture of the difference in water consumption between the east and west sides of the building. Because we chose to display daily water consumption data, it is necessary to display the day of the day. At the same time, we also add some explanatory text, such as unit, title, etc., to help users understand this dashboard. Since we are analyzing the use of water resources, we chose to use the cute image of a kitten to call on everyone to save water together.
 
