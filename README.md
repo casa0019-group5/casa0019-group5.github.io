@@ -24,6 +24,9 @@ We then had to decide how we wanted to represent this data. After some brainstor
 #### Main idea: 
 Receiving data from the Raspberry Pi via the Arduino, the servo is controlled to push the syringe, while the total amount of water used by the OPS for the day is displayed via a scale and NeoPixel lights.
 ####  Design flow:
+<div style="display: flex; align-items: center;">
+  <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/img1.png" width="600">
+</div>
 
 <b> Stage 1: Syringe attachment method </b>
 Thanks to Andy for supplying us with the raw materials: 10ml syringes, 10ml cylinder, plastic tube and 3D model for syringe holder, rack gear and pinion gear. Slightly changes have been made to cope with project.
@@ -49,6 +52,13 @@ As the syringe is filled with water, the servo needs sufficient torque to push t
 After comparison and testing, some servos were unable to rotate a full 180 degrees, preventing the syringe from fully extending or resetting to zero. Servos with 180 degree rotation offer better precision and control compared to 360 degree servos. As a result, the Geek servo was ultimately chosen.
 
 <b> Stage 3 : Circuit connection </b>
+<div style="display: flex; align-items: center;">
+  <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/flowchart.png" width="600">
+</div>
+
+<div style="display: flex; align-items: center;">
+  <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/circuit.png" width="600">
+</div>
 Arduino and Raspberry Pi based automation system to control the syringe and NeoPixel light to indicate water usage.The system is first connected to WiFi and initialised. Once initialised, data is fetched from the Raspberry Pi and processed to map it to the position of the syringe servo and the state of the NeoPixel light. If the data is less than 500, the system resets the syringe piston to its initial position, otherwise it continues to cycle through data acquisition and processing to maintain a real-time response state.
 
 <b> Stage 4 : Enclosure and test </b>  
@@ -62,6 +72,10 @@ One potential improvement is the use of coloured liquid inside the syringe to pr
 To ensure stability and precision, an advanced holder could be designed to securely hold the servo and its gears. This would help prevent unwanted movement or misalignment. Occasionally, rapid servo movement caused by miscalculation can cause the gears to slip or pop out. A more secure holder design would reduce this risk by holding the gears firmly in place, even during sudden movements.
 
 Another area for improvement is the Arduino MKR1010's network connection, which can sometimes be unstable. To address this, the box design can incorporate an external button connected to the Arduino's reset pin, allowing quick manual resets without opening the case. This ensures that troubleshooting and maintenance can be carried out efficiently while protecting the internal components.
+
+
+https://github.com/user-attachments/assets/a4a8edd3-a0f4-40e1-bce6-6a52c5a1cce4
+
 
 #### Reference
 1.	https://clipart-library.com/clip-art/syringe-clipart-transparent-21.htm
