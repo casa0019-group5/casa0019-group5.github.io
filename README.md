@@ -175,11 +175,41 @@ if (mqttObject.topic.Contains(""TW15-01-CE-001 BoostCWSMtrSAC2/Value""))' -Subsc
         {
             Floor15BAC2.text=mqttObject.msg;
 ```
-Therefore, I changed my approach as this was inefficient and used a list to subscribe to topics beforehand,
+Therefore, I changed this inefficient approach and used a dictionary to subscribe to a topic and to match them to their corresponding TextMeshPro, making it quicker to find and update information from the MQTT on arrival. In addition, adding a new floor was quicker as I just had to update the dictionary. Overall, this removed the multiple condition checks from before and streamlined my code making it more efficient.
+```
+    public List<TextMeshProUGUI> textsDash;
+int counter=0;
+    foreach (var item in _eventSender.topicSubscribe)
+    {
+         dashboardDict.Add(item,textsDash[counter]);
+         counter++;     
+    }
+// section between subscribing or unsubscribing
+    private void OnMessageArrivedHandler(mqttObj mqttObject) //the mqttObj is defined in the mqttManager.cs
+    {
+       var tempText=  dashboardDict[mqttObject.topic];
+       tempText.text=mqttObject.msg;
+        }      
+```
+After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP web call to request information directly from the data base, using unity's web call 'UnityWebRequest.Get(url))'. 
 
 ```
-  public List<TextMeshProUGUI> textsDash;
+ using (UnityWebRequest request = UnityWebRequest.Get(url))
+            {
+                // Send the request
+                yield return request.SendWebRequest();
+
+                // Handle the response
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    // Parse the response and update the corresponding text field
+                    if (urlToTextMap.TryGetValue(url, out var textField))
+                    {
+                        textField.text = request.downloadHandler.text;
+                    }
 ```
+
+### Barchart
 
 
 ## The UI part of the dashboard and its AR -- KE BAI
