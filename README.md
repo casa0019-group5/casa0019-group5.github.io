@@ -163,17 +163,47 @@ The `collect_water.js` script is setup in a PM2 instance, this contains the enti
 
 ---
 
-## Design of Dashboard
+## The UI part of the dashboard and its AR -- KE BAI
+### Dashboard Development
 
 ![Dashboard](./docs/Dashboard.png)
 
-When establishing the database, we found that the data we could obtain were the water consumption of the east and west sides of each floor and the total water consumption of the floor. Since it contains data on the water consumption of 16 floors from the 4th floor to the 19th floor, we didn't find a suitable table to display so many data at the same time. Therefore, we chose to use the form of numbers to present the data of the total water consumption of each layer more intuitively. In addition to the longitudinal comparison of each layer, we also used the data of different water consumption on the east and west sides of each layer. The bar chart on the dashboard also gives users a clear picture of the difference in water consumption between the east and west sides of the building. Because we chose to display daily water consumption data, it is necessary to display the day of the day. At the same time, we also add some explanatory text, such as unit, title, etc., to help users understand this dashboard. Since we are analyzing the use of water resources, we chose to use the cute image of a kitten to call on everyone to save water together.
+During the database setup, we collected data on water consumption for each floor, including usage on the east and west sides and the total water consumption per floor. Since the dataset spans 16 floors (from the 4th to the 19th), we found it challenging to display such a large volume of data using conventional tables. Instead, we opted for numerical displays to present the total water usage of each floor more intuitively.
 
-## AR of Dashboard
+To complement the vertical comparison between floors, we incorporated bar charts in the dashboard to visualize the water consumption differences between the east and west sides. These visualizations offer users a clearer understanding of usage distribution across the building.
+
+Given that the data focuses on daily water usage, we included a date display feature. Additional annotations, such as units and titles, were added to improve clarity and ease of interpretation.
+
+We also paid attention to aesthetics and messaging. Since water conservation is a critical theme, we included a playful kitten graphic and related symbols to emphasize the importance of saving water in a visually appealing way. This design choice was intended to make the dashboard more engaging while promoting environmental awareness.
+
+### AR Implementation
 
 ![AR Dashboard](./docs/AR%20Dashboard.jpg)
 
-First, we considered the possibility of bringing the entire dashboard to the screen just by scanning the logo on the physical device. Therefore, we chose to use the AR Tracked Image Manager script and put a photo of the logo in it. However, we found that the image was not always accurately recognized, so the dashboard sometimes did not appear as expected. So we added the Tap To Place script. This way, even if the image is not recognized, we can tap the screen to make the dashboard appear.
+To make the dashboard interactive and visually appealing, we explored integrating it into an augmented reality (AR) interface. The goal was to allow users to project the dashboard by scanning the logo on the physical device.
+
+For this functionality, we implemented Unity’s AR Tracked Image Manager script, enabling the recognition of predefined images, such as the logo. The system maps the logo image as an anchor point for overlaying the AR dashboard. However, during testing, we observed inconsistencies in image recognition, resulting in occasional failures to render the dashboard.
+
+To address this issue, we added the Tap To Place script as a backup feature. This script allows users to manually place the dashboard within the AR environment by tapping on their screen, ensuring accessibility even when image recognition fails.
+
+Additionally, we optimized the AR rendering by fine-tuning object scaling and placement so that the digital dashboard accurately aligns with the physical device. This design approach ensures the AR display does not obstruct the physical model but rather complements it, maintaining coherence between the two representations.
+
+By combining these two approaches—image tracking and manual placement—we enhanced the reliability of the AR experience, providing a seamless and flexible interaction mechanism for users.
+
+### Reflection and Conclusion
+
+My project demonstrated the potential of combining physical data visualization devices with augmented reality to create interactive and intuitive ways to interpret data. Throughout the development process, we encountered several challenges, including:
+
+- Data Complexity: Managing and visualizing data from multiple floors and sections required us to simplify the presentation while preserving key insights.
+- AR Recognition Limitations: Initial reliance on image tracking revealed issues with detection reliability, which we mitigated by integrating a manual placement feature.
+- User Engagement: Balancing functionality with aesthetic appeal was critical to ensure the visualization was not only informative but also engaging and impactful.
+
+Key successes of the project include:
+- Effective integration of MQTT data streams into Unity for real-time updates.
+- A dual-mode AR implementation that provides redundancy and flexibility for users.
+- A visually engaging dashboard that promotes environmental awareness through thoughtful design elements, such as the kitten graphic.
+
+Areas for future improvement include expanding the dashboard’s interactivity by incorporating time-series analysis and predictive analytics to identify trends and anomalies in water usage. Further optimizations could also involve refining the AR tracking accuracy or exploring markerless AR technologies for smoother performance.
 
 #### Reference
 
