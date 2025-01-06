@@ -150,7 +150,7 @@ The `collect_water.js` script is setup in a PM2 instance, this contains the enti
 
 7. Run `collect_water.js`
 
-- Note: Database is built the first run, but is unaccessible by the script until the second run.
+- Note: Database is built on the first run, but is inaccessible by the script until the second run.
 
 ### Check Results
 
@@ -162,6 +162,25 @@ The `collect_water.js` script is setup in a PM2 instance, this contains the enti
 - `SELECT * FROM water_table;`
 
 ---
+
+## Data and Scripts - Dashboard (EG)
+
+### Initial Challenges 
+When we found the MQTT stream for the OPS Water Meter, I realised we could repurpose code from the workshop for our MQTT stream. Since we had access to 30 readings in total, I subscribed to each different floor using their unique topic. This as expected returned the value for each floor and worked completely fine. However, a problem arose when I tried to subscribe to more than 5 topics. I replicated the code below for multiple floors, however, when I tested it on the dashboard values were missing. After some debugging and consultation with Valerio, I figured out that Unity's speed of subscribing to the topics and returning its values was slower than the rate of new values that were received via MQTT. This resulted in the SAC values either being overwritten or simply not appearing.
+
+```
+public TextMeshProUGUI Floor15BAC2;  -Individual Text Mesh Pro For Each Floor
+
+if (mqttObject.topic.Contains(""TW15-01-CE-001 BoostCWSMtrSAC2/Value""))' -Subscribing To Each Unique Topic
+        {
+            Floor15BAC2.text=mqttObject.msg;
+```
+Therefore, I changed my approach as this was inefficient and used a list to subscribe to topics beforehand,
+
+```
+  public List<TextMeshProUGUI> textsDash;
+```
+
 
 ## The UI part of the dashboard and its AR -- KE BAI
 ### Dashboard Development
