@@ -41,9 +41,9 @@ The Arduino queries a PiCloud API to retrieve water data, and the servo pushes t
 <b> Stage 1: Syringe attachment method </b>
 Thanks to Andy for supplying us with the following materials: 10ml syringes, 10ml cylinder, and plastic tubing, as well as the 3D models for the syringe holder, and rack and pinion gears. Some modifications have been made to address the device requirements.
 
-When designing the physical device, I tried three different methods. The first method was to use a U-shaped tube with a hole at the bottom connected to a syringe. By pushing or pulling the syringe with a servo, water was injected or extracted to display the water level. However, due to the equal pressure, the water level on both sides of the U-tube remained the same, making it impossible to accurately reflect the movement of the syringe. This approach was eventually abandoned.
+When designing the physical device, I tried three different approaches. The first approach was to use a U-shaped tube with a hole at the bottom connected to a syringe. By pushing or pulling the syringe with a servo, water was injected or extracted to display the water level. However, due to the equal pressure, the water level on both sides of the U-tube remained the same, making it impossible to accurately reflect the movement of the syringe. 
 
-The second method used a soft tube to connect the syringe to a measuring cylinder. By pushing the syringe, water was injected into the cylinder to indicate water usage, and by pulling back, water was withdrawn. However, during testing, it was found that some water remained in the cylinder after each reset, causing it to build up over time, leading to inaccurate readings and water loss. As a result, this method was not adopted.
+The second approach used a soft tube to connect the syringe to a measuring cylinder. By pushing the syringe, water was injected into the cylinder to indicate water usage, and by pulling back water was withdrawn. However, during testing, I found some water remained in the cylinder building up after each reset, causing inaccurate readings and water loss. 
 
 The final method successfully implemented was to connect two syringes with a plastic tube to form a sealed hydraulic system. Squeezing one syringe forced water into the other, moving the plunger to indicate water consumption. This solution prevented water build-up, allowed full water recirculation and ensured accurate resets, providing a stable and accurate measurement system.
 
@@ -59,7 +59,7 @@ As the syringe is filled with water, the servo needs sufficient torque to push t
 | TS90        | 1.8            | 180                      | 3.3-5.0        |
 | Geek Servo  | 2              | 270                      | 3.0-5.0        |
 
-After testing, some servos were unable to rotate a full 180 degrees, preventing the syringe from fully extending or resetting to zero. Servos with 180 degree rotation offer better precision and control compared to 360 degree servos. As a result, the Geek servo was ultimately chosen.
+After testing, some servos were unable to rotate a full 180 degrees, preventing the syringe from fully extending or resetting to zero. Servos with 180-degree rotation offer better precision and control compared to 360-degree servos. As a result, the Geek servo was ultimately chosen.
 
 <b> Stage 3 : Circuit connection </b>
 
@@ -74,17 +74,7 @@ After testing, some servos were unable to rotate a full 180 degrees, preventing 
 The Arduino controls the syringe and NeoPixel light to indicate water usage. First, the system connects to WiFi and initializes. Then, data is fetched from the Raspberry Pi and processed to map it to the position of the syringe servo and the state of the NeoPixel light. If the data is less than 500, the system resets the syringe piston to its initial position, otherwise it continues to cycle through data acquisition and processing to maintain a real-time response state.
 
 <b> Stage 4 : Enclosure and test </b>  
-A laser cutter was used to make holes in a single wooden board to hold both the syringe and the servo. The sizes and positions of the holes were determined through multiple tests to ensure that the servo could smoothly push and pull the syringe along the scale, reaching both maximum and minimum values. As the servo and NeoPixel are powered by Arduino, the entire circuit was placed in a box under the wooden board to maintain a clean appearance and avoid interference with the power supply. The box is secured with interlocking edges for stability and is easy to open and close, allowing quick access to the Arduino MKR1010's reset button for efficient troubleshooting and maintenance without dismantling the entire system.
-
-### Design Optimization and Future Improvements
-
-During the design process, several areas for optimisation and improvement were identified to improve both functionality and reliability.
-
-One potential improvement is the use of coloured liquid inside the syringe to provide clearer and more intuitive visual feedback on water usage. This would make it easier to read the syringe's scale and observe the movement of the plunger, improving the user experience. In addition, the use of larger syringes would allow for greater measurement capacity, reducing the need for frequent resets and enabling the system to handle larger volumes of water.
-
-To ensure stability and precision, the servo holder could be redesigned to prevent slippage. This would help prevent unwanted movement or misalignment. Occasionally, rapid servo movement caused by miscalculation can cause the gears to slip or pop out. A more secure holder design would reduce this risk by holding the gears firmly in place, even during sudden movements.
-
-Another area for improvement is the Arduino MKR1010's network connection, which can sometimes be unstable. To address this, the box design can incorporate an external button connected to the Arduino's reset pin, allowing quick manual resets without opening the case. This ensures that troubleshooting and maintenance can be carried out efficiently while protecting the internal components.
+A laser cutter was used to make holes in a single wooden board to hold both the syringe and the servo. The sizes and positions of the holes were determined through multiple tests to ensure that the servo could smoothly push and pull the syringe along the scale, reaching both maximum and minimum values. As the servo and NeoPixel are powered by Arduino, the entire circuit was placed in a box under the wooden board to maintain a clean appearance and avoid interference with the power supply. The box is secured with interlocking edges for stability and is easy to open and close. This allows for quicker access to the MKR1010's reset button, making troubleshooting and maintenance easier. 
 
 https://github.com/user-attachments/assets/a4a8edd3-a0f4-40e1-bce6-6a52c5a1cce4.mp4
 
@@ -160,10 +150,6 @@ The `collect_water.js` script is set up in a PM2 instance, this contains the ent
 
 ---
 
-### Reflection
-
-I was able to achieve most of what I had set out to do with this project, however, I think the water usage data has more insights we can pull from it. Creating more endpoints to track water usage over the month or year can give us a deeper understanding of how time of year could effect water usage. Also, upgrading from the piCloud to an AWS server could open up more collabrative efforts across UCL and other institutes by linking us outside of the OPS network.
-
 ## Data and Scripts - Dashboard (EG)
 
 ### Initial Challenges
@@ -216,7 +202,7 @@ After Vineeth had set up the database I changed the MQTT in the dictionary to th
 
 ### Barchart
 
-Additionally, using Xcharts I created a bar chart that was integrated into the rest of the dashboard. I set the endpoint for the data the bar chart was going to use using the variable `public string apiEndpointSAC = "http://10.129.111.13:3001/total/SAC";`. This endpoint held data for the total SAC from both sides and all floors of the tower. I then repurposed the HTTP call code from earlier to fetch data from the database update the bar chart.
+Additionally, using Xcharts I created a bar chart that was integrated into the rest of the dashboard. I set the endpoint for the data the bar chart was going to use using the variable `public string apiEndpointSAC = "http://10.129.111.13:3001/total/SAC";`. This endpoint held data for the total SAC from both sides of the tower and its floors. I then repurposed the HTTP call code from earlier to fetch data from the database and update the bar chart.
 
 ```
  IEnumerator GetData(string url)
@@ -283,21 +269,14 @@ Additionally, we optimized the AR rendering by fine-tuning object scaling and pl
 
 By combining these two approaches, image tracking and manual placement, we enhanced the reliability of the AR experience, providing a seamless and flexible experience for users.
 
-### Reflections
 
-My project demonstrated the potential of combining physical data visualization devices with augmented reality to create interactive and intuitive ways to interpret data. Throughout the development process, we encountered several challenges, including:
 
-- Data Complexity: Managing and visualizing data from multiple floors and sections required us to simplify the presentation while preserving key insights.
-- AR Recognition Limitations: Initial reliance on image tracking revealed issues with detection reliability, which we mitigated by integrating a manual placement feature.
-- User Engagement: Balancing functionality with aesthetic appeal was critical to ensure the visualization was not only informative but also engaging and impactful.
+## Reflections
 
-Key successes of the project include:
+To conclude, as a group, we achieved the main goal of a fully working gauge with a functional AR dashboard. Regarding the digital aspect of the project, we successfully moved the MQTT data onto a Pi database giving us more customised data to display. This led to significantly more streamlined and efficient scripts, making it quicker to add or remove data from the dashboard. Therefore, in AR we had dynamic data, which was presented in a visually appealing manner to users. However, for future projects we hope for even more endpoints in our database, allowing for further customisation of data. Moreover, we had some issues with AR tracking and in future projects we hope to use a less manual placement approach, allowing for a smoother user experience. 
 
-- Effective integration of MQTT data streams into Unity for real-time updates.
-- A dual-mode AR implementation that provides redundancy and flexibility for users.
-- A visually engaging dashboard that promotes environmental awareness through thoughtful design elements, such as the kitten graphic.
+In terms of the physical aspect of the project, we successfully avoided water buildup impacting readings along with mitigating the impact of servos that lacked the adequate amount of rotation. In addition, using neopixels we added another way for users to visualise the data. However, for future improvements we would potentially include coloured water, to make visualisation of the water movement even clearer. In addition, we would reconsider our servo holder design to provide more stability and prevent unwanted movement. Moreover, another design improvement is to add a way to access the reset button of the microcontroller without having to open the box. This would allow for even quicker troubleshooting and reduce the likelihood of damaging components. Just as importantly, we would look into alternative microcontrollers with more stable connections, reducing the frequency of connectivity issues. 
 
-Areas for future improvement include expanding the dashboard’s interactivity by incorporating time-series analysis and predictive analytics to identify trends and anomalies in water usage. Further optimizations could also involve refining the AR tracking accuracy or exploring markerless AR technologies for smoother performance.
 
 ## References
 
