@@ -175,7 +175,7 @@ if (mqttObject.topic.Contains(""TW15-01-CE-001 BoostCWSMtrSAC2/Value""))' -Subsc
         {
             Floor15BAC2.text=mqttObject.msg;
 ```
-Therefore, I changed this inefficient approach and used a dictionary to subscribe to a topic and to match them to their corresponding TextMeshPro, making it quicker to find and update information from the MQTT on arrival. In addition, adding a new floor was quicker as I just had to update the dictionary. Overall, this removed the multiple condition checks from before and streamlined my code making it more efficient.
+Therefore, this inefficient approach was changed and I rewrote the whole code to use a dictionary. Using this approach I was able to subscribe to a topic and match them to their corresponding TextMeshPro, making it quicker to find and update information from the MQTT on arrival. In addition, adding a new floor was quicker as only the dictionary had to be updated. Overall, this removed the inefficient condition checks of each topic and streamlined the code.
 ```
     public List<TextMeshProUGUI> textsDash;
 int counter=0;
@@ -191,7 +191,7 @@ int counter=0;
        tempText.text=mqttObject.msg;
         }      
 ```
-After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP web call to request information directly from the data base, using unity's web call 'UnityWebRequest.Get(url))'. 
+After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP web call to request information directly from the data base, using unity's HTTP call `UnityWebRequest.Get(url))`. 
 
 ```
  using (UnityWebRequest request = UnityWebRequest.Get(url))
@@ -211,7 +211,42 @@ After Vineeth had set up the database I changed the MQTT in the dictionary to th
 
 ### Barchart
 
+Additionally, using Xcharts I created a bar chart that was further integrated into the rest of the dashboard. I had to set the endpoint for the data the bar chart was going to use using the variable `public string apiEndpointSAC = "http://10.129.111.13:3001/total/SAC";`. This endpoint held data for the total SAC from both sides and all floors of the tower. I then repurposed the HTTP call code from earlier to fetch data from the database and process this to update the bar chart.
+```
+ IEnumerator GetData(string url)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
 
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string responseData = request.downloadHandler.text; // JSON response
+            Debug.Log("Response: " + responseData);
+
+            // Parse the JSON and update the bar chart
+            UpdateBarChart(responseData);
+        }
+```
+However, we ran into an issue where only one bar chart was updated. Therefore, a JSON string was created to store the values for this specific API endpoint on the database. This subsequent data was stored in a root for each SAC1 and SAC2. It was then parsed so it was usable and able to update the bar chart, resulting in two bar graphs that dynamically update with accurate data from our database. Overall, this led to a clear visualisation of SAC data from the tower, that was seamlessly integrated into the rest of the dashboard.
+
+```
+ // Debug: Log the parsed values
+        Debug.Log($"SAC1: {sacValues.sac1}, SAC2: {sacValues.sac2}");
+
+        // Clear the existing chart data
+        barChart.ClearData();
+
+        // Add SAC1 data (Series 0)
+        barChart.AddData(0, sacValues.sac1);
+        barChart.AddXAxisData("SAC1");
+
+        // Add SAC2 data (Series 0)
+        barChart.AddData(0, sacValues.sac2);
+        barChart.AddXAxisData("SAC2");
+
+        // Force refresh to ensure chart updates
+        barChart.RefreshChart();
+```
 ## The UI part of the dashboard and its AR -- KE BAI
 ### Dashboard Development
 
@@ -254,13 +289,20 @@ Key successes of the project include:
 
 Areas for future improvement include expanding the dashboard’s interactivity by incorporating time-series analysis and predictive analytics to identify trends and anomalies in water usage. Further optimizations could also involve refining the AR tracking accuracy or exploring markerless AR technologies for smoother performance.
 
-#### Reference
+#### References
 
-1. https://clipart-library.com/clip-art/syringe-clipart-transparent-21.htm
-2. https://www.freepik.com/icon/servo_6276775
-3. https://clipart-library.com/clip-art/366-3666355_arduino-vector-black-and-white-arduino-icon.htm
-4. https://components101.com/motors/mg90s-metal-gear-servo-motor
-5. https://bc-robotics.com/shop/micro-servo-sg90-360-degrees/
-6. https://www.ebay.com/itm/225446283692?msockid=18393fb6b706665c3be02abfb6c067fb
-7. https://forum.fritzing.org/t/pine-a64-esp8266-12e-f-arduino-zero-and-mkr1000-new-fritzing-parts/1611
-8. https://github.com/adafruit/Fritzing-Library/blob/master/parts/Adafruit%20NeoPixel%20Stick.fzpz package for fritzing Neopixel8
+1. Clip Art Library (2016) syringe cartoon png
+ - Clip Art Library, Clipart-library.com. Available at: https://clipart-library.com/clip-art/syringe-clipart-transparent-21.htm 
+2. Freepik (2021) Servo Special Lineal color icon | Freepik, Freepik. Available at: https://www.freepik.com/icon/servo_6276775 
+3. Clip Art Library (2016a) arduino black and white
+ - Clip Art Library, Clipart-library.com. Available at: https://clipart-library.com/clip-art/366-3666355_arduino-vector-black-and-white-arduino-icon.htm 
+4. Components101 (2019) MG90S Micro Servo Motor Datasheet, Wiring Diagram & Features, Components101. Available at: https://components101.com/motors/mg90s-metal-gear-servo-motor.
+5. BC Robotics (no date) SG90 Micro Servo (360 degrees) - Continuous Rotation, BC Robotics. Available at: https://bc-robotics.com/shop/micro-servo-sg90-360-degrees/.
+6. ebay (2022) 4 PCS 270° Programmable Gray Geek-Servo Motor with Wire JST/JR PH2.0 Connector, eBay. Available at: https://www.ebay.com/itm/225446283692?msockid=18393fb6b706665c3be02abfb6c067fb 
+7. fritzing forum (2016) Pine-A64, ESP8266-12E/F, Arduino ZERO, and MKR1000 - New Fritzing Parts, fritzing forum. Available at: https://forum.fritzing.org/t/pine-a64-esp8266-12e-f-arduino-zero-and-mkr1000-new-fritzing-parts/1611 
+8. adafruit (2016) Fritzing-Library/parts/Adafruit NeoPixel Stick.fzpz at master · adafruit/Fritzing-Library, GitHub. Available at: https://github.com/adafruit/Fritzing-Library/blob/master/parts/Adafruit%20NeoPixel%20Stick.fzpz (Accessed: 7 January 2025).
+9. Saini, A. (2019) C# Dictionary with examples, GeeksforGeeks. Available at: https://www.geeksforgeeks.org/c-sharp-dictionary-with-examples/
+10. Stackoverflow (2017) Sending http requests in C# with Unity, Stack Overflow. Available at: https://stackoverflow.com/questions/46003824/sending-http-requests-in-c-sharp-with-unity.
+11. XCharts-Team (2018) XCharts/Documentation~ at master · XCharts-Team/XCharts, GitHub. Available at: https://github.com/XCharts-Team/XCharts/tree/master/Documentation~ 
+
+
