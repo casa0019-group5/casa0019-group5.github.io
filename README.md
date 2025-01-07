@@ -182,8 +182,7 @@ int counter=0;
         }
 ```
 
-After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP GET request directly from the database, using unity's HTTP call `UnityWebRequest.Get(url))`.
-
+After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP GET request directly from the database, using unity's HTTP call `UnityWebRequest.Get(url))` (Stackoverflow, 2017). 
 ```
  using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
