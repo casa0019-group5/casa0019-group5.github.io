@@ -41,13 +41,13 @@ The Arduino queries a PiCloud API to retrieve water data, and the servo pushes t
 <b> Stage 1: Syringe attachment method </b>
 Thanks to Andy for supplying us with the following materials: 10ml syringes, 10ml cylinder, and plastic tubing, as well as the 3D models for the syringe holder, and rack and pinion gears. Some modifications have been made to address the device requirements.
 
-When designing the physical device, I tried three different approaches. The first approach was to use a U-shaped tube with a hole at the bottom connected to a syringe. By pushing or pulling the syringe with a servo, water was injected or extracted to display the water level. However, due to the equal pressure, the water level on both sides of the U-tube remained the same, making it impossible to accurately reflect the movement of the syringe. 
+When designing the physical device, I tried three different approaches. The first approach was to use a U-shaped tube with a hole at the bottom connected to a syringe. By pushing or pulling the syringe with a servo, water was injected or extracted to display the water level. However, due to the equal pressure, the water level on both sides of the U-tube remained the same, making it impossible to accurately reflect the movement of the syringe.
 
-The second approach used a soft tube to connect the syringe to a measuring cylinder. By pushing the syringe, water was injected into the cylinder to indicate water usage, and by pulling back water was withdrawn. However, during testing, I found some water remained in the cylinder building up after each reset, causing inaccurate readings and water loss. 
+The second approach used a soft tube to connect the syringe to a measuring cylinder. By pushing the syringe, water was injected into the cylinder to indicate water usage, and by pulling back water was withdrawn. However, during testing, I found some water remained in the cylinder building up after each reset, causing inaccurate readings and water loss.
 
 The final method successfully implemented was to connect two syringes with a plastic tube to form a sealed hydraulic system. Squeezing one syringe forced water into the other, moving the plunger to indicate water consumption. This solution prevented water build-up, allowed full water recirculation and ensured accurate resets, providing a stable and accurate measurement system.
 
-<b> stage2: Servo selection and syringe connection </b>
+<b> Stage 2: Servo selection and syringe connection </b>
 As the syringe is filled with water, the servo needs sufficient torque to push the plunger. Precise control of the scale is required, so the servo must have a minimum rotation angle of 180 degrees.
 
 #### Servo Comparison Table
@@ -61,7 +61,7 @@ As the syringe is filled with water, the servo needs sufficient torque to push t
 
 After testing, some servos were unable to rotate a full 180 degrees, preventing the syringe from fully extending or resetting to zero. Servos with 180-degree rotation offer better precision and control compared to 360-degree servos. As a result, the Geek servo was ultimately chosen.
 
-<b> Stage 3 : Circuit connection </b>
+<b> Stage 3: Circuit connection </b>
 
 <div style="display: flex; align-items: center;">
   <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/flowchart.png" width="600">
@@ -73,8 +73,8 @@ After testing, some servos were unable to rotate a full 180 degrees, preventing 
 
 The Arduino controls the syringe and NeoPixel light to indicate water usage. First, the system connects to WiFi and initializes. Then, data is fetched from the Raspberry Pi and processed to map it to the position of the syringe servo and the state of the NeoPixel light. If the data is less than 500, the system resets the syringe piston to its initial position, otherwise it continues to cycle through data acquisition and processing to maintain a real-time response state.
 
-<b> Stage 4 : Enclosure and test </b>  
-A laser cutter was used to make holes in a single wooden board to hold both the syringe and the servo. The sizes and positions of the holes were determined through multiple tests to ensure that the servo could smoothly push and pull the syringe along the scale, reaching both maximum and minimum values. As the servo and NeoPixel are powered by Arduino, the entire circuit was placed in a box under the wooden board to maintain a clean appearance and avoid interference with the power supply. The box is secured with interlocking edges for stability and is easy to open and close. This allows for quicker access to the MKR1010's reset button, making troubleshooting and maintenance easier. 
+<b> Stage 4: Enclosure and test </b>  
+A laser cutter was used to make holes in a single wooden board to hold both the syringe and the servo. The sizes and positions of the holes were determined through multiple tests to ensure that the servo could smoothly push and pull the syringe along the scale, reaching both maximum and minimum values. As the servo and NeoPixel are powered by Arduino, the entire circuit was placed in a box under the wooden board to maintain a clean appearance and avoid interference with the power supply. The box is secured with interlocking edges for stability and is easy to open and close. This allows for quicker access to the MKR1010's reset button, making troubleshooting and maintenance easier.
 
 https://github.com/user-attachments/assets/a4a8edd3-a0f4-40e1-bce6-6a52c5a1cce4.mp4
 
@@ -82,7 +82,7 @@ https://github.com/user-attachments/assets/a4a8edd3-a0f4-40e1-bce6-6a52c5a1cce4.
 
 ## MQTT to Raspberry Pi Database -- Vineeth Kirandumkara
 
-One of the main problems encountered with the data stream was that the values we received was the total amount of water used since the time the sensors were powered on. This meant for example we couldn't display specific data such as data from the last 24 hours. To solve this, I created a javascript (`collect_water.js`) that ran every 10 minutes, to store the values from the MQTT stream in a SQL database along with a timestamp, the floor number and SAC. Using this database, I created an API (`server.js`) with 6 endpoints:
+One of the main problems encountered with the data stream was that the values we received was the total amount of water used since the sensors were powered on. This meant we couldn't display specific timescale data such as water usage over the last 24 hours. To solve this, I created a javascript (`collect_water.js`) that ran every 10 minutes, to store the values from the MQTT stream in a SQL database along with a timestamp, floor number and SAC. Using this database, I created an API (`server.js`) with 6 endpoints:
 
 | Endpoint           | Description                     | Output                                                               |
 | ------------------ | ------------------------------- | -------------------------------------------------------------------- |
@@ -154,7 +154,7 @@ The `collect_water.js` script is set up in a PM2 instance, this contains the ent
 
 ### Initial Challenges
 
-When we found the MQTT stream for the OPS Water Meter, I realised we could repurpose code from the workshop for our MQTT stream. Since we had access to 30 readings in total, I subscribed to each different floor using their unique topic. This as expected returned the value for each floor and worked completely fine. However, a problem arose when I tried to subscribe to more than 5 topics. I replicated the code below for multiple floors, however, when I tested it on the dashboard values were missing. After some debugging and consultation with Valerio, I figured out that Unity's speed of subscribing to the topics and returning its values was slower than the rate of new values that were received via MQTT. This resulted in the SAC values either being overwritten or simply not appearing.
+When we found the MQTT stream for the OPS Water Meter, I realised we could repurpose code from the workshop for our MQTT stream. Since we had access to 30 readings in total, I subscribed to each different floor using their unique topic. This, as expected, returned the value for each floor and worked completely fine. However, a problem arose when I tried to subscribe to more than 5 topics. I replicated the code below for multiple floors, however, when I tested it on the dashboard values were missing. After some debugging and consultation with Valerio, I figured out that Unity's speed of subscribing to the topics and returning its values was slower than the rate of new values that were received via MQTT. This resulted in the SAC values either being overwritten or simply not appearing.
 
 ```
 public TextMeshProUGUI Floor15BAC2;  -Individual Text Mesh Pro For Each Floor
@@ -182,7 +182,8 @@ int counter=0;
         }
 ```
 
-After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP GET request directly from the database, using unity's HTTP call `UnityWebRequest.Get(url))` (Stackoverflow, 2017). 
+After Vineeth had set up the database I changed the MQTT in the dictionary to the corresponding HTTP endpoints. Moreover, I added some additional code for an HTTP GET request directly from the database, using unity's HTTP call `UnityWebRequest.Get(url))` (Stackoverflow, 2017).
+
 ```
  using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
@@ -268,14 +269,11 @@ Additionally, we optimized the AR rendering by fine-tuning object scaling and pl
 
 By combining these two approaches, image tracking and manual placement, we enhanced the reliability of the AR experience, providing a seamless and flexible experience for users.
 
-
-
 ## Reflections
 
-To conclude, as a group, we achieved the main goal of a fully working gauge with a functional AR dashboard. Regarding the digital aspect of the project, we successfully moved the MQTT data onto a Pi database giving us more customised data to display. This led to significantly more streamlined and efficient scripts, making it quicker to add or remove data from the dashboard. Therefore, in AR we had dynamic data, which was presented in a visually appealing manner to users. However, for future projects we hope for even more endpoints in our database, allowing for further customisation of data. Moreover, we had some issues with AR tracking and in future projects we hope to use a less manual placement approach, allowing for a smoother user experience. 
+To conclude, as a group, we achieved the main goal of a fully working gauge with a functional AR dashboard. Regarding the digital aspect of the project, we successfully moved the MQTT data onto a Pi database giving us more customised data to display. This led to significantly more streamlined and efficient scripts, making it quicker to add or remove data from the dashboard. Therefore, in AR we had dynamic data, which was presented in a visually appealing manner to users. However, for future projects we hope for even more endpoints in our database, allowing for further customisation of data. Moreover, we had some issues with AR tracking and in future projects we hope to use a less manual placement approach, allowing for a smoother user experience.
 
-In terms of the physical aspect of the project, we successfully avoided water buildup impacting readings along with mitigating the impact of servos that lacked the adequate amount of rotation. In addition, using neopixels we added another way for users to visualise the data. However, for future improvements we would potentially include coloured water, to make visualisation of the water movement even clearer. In addition, we would reconsider our servo holder design to provide more stability and prevent unwanted movement. Moreover, another design improvement is to add a way to access the reset button of the microcontroller without having to open the box. This would allow for even quicker troubleshooting and reduce the likelihood of damaging components. Just as importantly, we would look into alternative microcontrollers with more stable connections, reducing the frequency of connectivity issues. 
-
+In terms of the physical aspect of the project, we successfully avoided water buildup impacting readings along with mitigating the impact of servos that lacked the adequate amount of rotation. In addition, using neopixels we added another way for users to visualise the data. However, for future improvements we would potentially include coloured water, to make visualisation of the water movement even clearer. In addition, we would reconsider our servo holder design to provide more stability and prevent unwanted movement. Moreover, another design improvement is to add a way to access the reset button of the microcontroller without having to open the box. This would allow for even quicker troubleshooting and reduce the likelihood of damaging components. Just as importantly, we would look into alternative microcontrollers with more stable connections, reducing the frequency of connectivity issues.
 
 ## References
 
