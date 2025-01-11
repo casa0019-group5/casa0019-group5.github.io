@@ -2,7 +2,7 @@
 
 website: https://casa0019-group5.github.io/
 
-<img src="./docs/physical device.jpg" alt="Image">
+![device](./docs/physical_device.jpg)
 
 ---
 
@@ -34,9 +34,7 @@ The Arduino queries a PiCloud API to retrieve water data, and the servo pushes t
 
 ### Design flow:
 
-<div style="display: flex; align-items: center;">
-  <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/img1.png" width="600">
-</div>
+![designFlow](./PhysicalDevice/img/img1.png)
 
 <b> Stage 1: Syringe attachment method </b>
 Thanks to Andy for supplying us with the following materials: 10ml syringes, 10ml cylinder, and plastic tubing, as well as the 3D models for the syringe holder, and rack and pinion gears. Some modifications have been made to address the device requirements.
@@ -63,13 +61,9 @@ After testing, some servos were unable to rotate a full 180 degrees, preventing 
 
 <b> Stage 3: Circuit connection </b>
 
-<div style="display: flex; align-items: center;">
-  <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/flowchart.png" width="600">
-</div>
+![flowchart](./PhysicalDevice/img/flowchart.png)
 
-<div style="display: flex; align-items: center;">
-  <img src="https://raw.githubusercontent.com/casa0019-group5/casa0019-group5.github.io/refs/heads/main/PhysicalDevice/img/circuit.png" width="600">
-</div>
+![circuit](./PhysicalDevice/img/circuit.png)
 
 The Arduino controls the syringe and NeoPixel light to indicate water usage. First, the system connects to WiFi and initializes. Then, data is fetched from the Raspberry Pi and processed to map it to the position of the syringe servo and the state of the NeoPixel light. If the data is less than 500, the system resets the syringe piston to its initial position, otherwise it continues to cycle through data acquisition and processing to maintain a real-time response state.
 
