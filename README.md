@@ -2,7 +2,7 @@
 
 website: https://casa0019-group5.github.io/
 
-![device](./docs/physical_device.jpg)
+![device](./docs/physical_device.jpg){ width=600px }
 
 ---
 
@@ -10,7 +10,7 @@ website: https://casa0019-group5.github.io/
 
 After receiving the initial assignment brief, we started digging through data sources linked with UCL. The source that caught our eye early on was the MQTT stream for One Pool Street (OPS), specifically, the water meter data from the building. Working with William Markiewicz, we came to understand the MQTT stream showed the total water usage from the time the sensors were first powered on, and that the data was only for floors 4 through 19 in the west tower. Furthermore, the MQTT topics were split by both floor and SAC. SAC is a term used to describe one half of a floor, in the below image, the floor is split through the middle, where the top half would be represented by SAC1, and the bottom half would be represented by SAC2. To anyone interested in looking at the existing datastream, the topic is: `UCL/OPSEBOAS/PSW TW20-XX-CE-001/BACnet Interface/Application/Energy Monitoring/Water Meters`.
 
-![Tower West Breakdown](./docs/TowerWestBreakdown.png)
+![Tower West Breakdown](./docs/TowerWestBreakdown.png){ width=50px }
 
 _Tower West SACs_
 
@@ -61,9 +61,9 @@ After testing, some servos were unable to rotate a full 180 degrees, preventing 
 
 <b> Stage 3: Circuit connection </b>
 
-![flowchart](./PhysicalDevice/img/flowchart.png)
+![flowchart](./PhysicalDevice/img/flowchart.png){ width=200px }
 
-![circuit](./PhysicalDevice/img/circuit.png)
+![circuit](./PhysicalDevice/img/circuit.png){ width=200px }
 
 The Arduino controls the syringe and NeoPixel light to indicate water usage. First, the system connects to WiFi and initializes. Then, data is fetched from the Raspberry Pi and processed to map it to the position of the syringe servo and the state of the NeoPixel light. If the data is less than 500, the system resets the syringe piston to its initial position, otherwise it continues to cycle through data acquisition and processing to maintain a real-time response state.
 
@@ -91,7 +91,7 @@ One of the main problems encountered with the data stream was that the values we
 
 The `collect_water.js` script is set up in a PM2 instance, this contains the entire build environment, and therefore allows us to set the environmental variables. This specific script is then restarted every 10 minutes using a crontab job. Furthermore, by using a PM2 instance, we can also provide the `server.js` file with all the private variables needed to be continuously running in the background of the pi.
 
-![backend arch](./docs/Backend.drawio.png)
+![backend arch](./docs/Backend.drawio.png){ width=200px }
 
 ### RaspberryPi Setup
 
@@ -251,7 +251,7 @@ We also paid attention to aesthetics and messaging. Since water conservation is 
 
 ### AR Implementation
 
-![AR Dashboard](./docs/AR%20Dashboard.jpg)
+![AR Dashboard](./docs/ar_dash.jpg)
 
 To improve the interactivity between the device and the dashboard, we integrated it into an augmented reality (AR) interface. The goal was to allow users to project the dashboard by scanning the logo on the physical device.
 
